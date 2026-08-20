@@ -1,0 +1,2106 @@
+<!DOCTYPE html>
+<html lang="tr" id="htmlRoot">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="pageTitle">ATS CV Oluşturucu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --bg: #F2F3F0;
+      --surface: #FFFFFF;
+      --surface-2: #FAFAF8;
+      --line: #E4E5E0;
+      --line-strong: #D2D4CC;
+      --ink: #1B1E27;
+      --ink-dim: #666C78;
+      --ink-faint: #9BA0AA;
+      --accent: #1F3FAE;
+      --accent-hover: #16307E;
+      --accent-soft: #E8ECFB;
+      --accent-line: #B9C4EE;
+      --accent-2: #7C3AED;
+      --success: #1E7A4D;
+      --success-soft: #E1F2E7;
+      --success-line: #A8D9BC;
+      --warn: #9C6209;
+      --warn-soft: #FBF0D9;
+      --warn-line: #EAC781;
+      --fail: #AC3A31;
+      --fail-soft: #FBEAE7;
+      --fail-line: #EFB9B0;
+      --paper: #FFFFFF;
+      --cv-ink: #1A1A1A;
+      --cv-accent: #28344A;
+      --radius: 14px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background:
+        radial-gradient(1100px 480px at 8% -12%, #EEF1FB 0%, rgba(238, 241, 251, 0) 60%),
+        radial-gradient(900px 420px at 108% 0%, #F3EEFB 0%, rgba(243, 238, 251, 0) 55%),
+        var(--bg);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection {
+      background: var(--accent-soft);
+      color: var(--accent-hover);
+    }
+
+    ::-webkit-scrollbar {
+      width: 10px;
+      height: 10px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--line-strong);
+      border-radius: 10px;
+      border: 2px solid var(--bg);
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--ink-faint);
+    }
+
+    .topbar {
+      height: 4px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent) 0%, var(--accent-2) 50%, var(--success) 100%);
+    }
+
+    /* ---------- HEADER ---------- */
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      padding: 18px 32px;
+      background: rgba(255, 255, 255, .86);
+      -webkit-backdrop-filter: blur(10px);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--line);
+      flex-wrap: wrap;
+      position: sticky;
+      top: 0;
+      z-index: 30;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand .mark {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .06em;
+      color: #fff;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      padding: 6px 11px;
+      border-radius: 8px;
+      flex: none;
+      box-shadow: 0 4px 12px rgba(31, 63, 174, .28);
+    }
+
+    .brand h1 {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 17px;
+      font-weight: 600;
+      margin: 0 0 2px;
+      letter-spacing: .01em;
+      color: var(--ink);
+    }
+
+    .brand p {
+      margin: 0;
+      font-size: 13px;
+      color: var(--ink-dim);
+      display: none;
+    }
+
+    @media(min-width:900px) {
+      .brand p {
+        display: block;
+      }
+    }
+
+    .mid-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    /* language switch */
+    .lang-switch {
+      display: flex;
+      align-items: center;
+      position: relative;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 3px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      font-weight: 600;
+      flex: none;
+    }
+
+    .lang-switch .lang-thumb {
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: calc(50% - 3px);
+      height: calc(100% - 6px);
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-radius: 20px;
+      transition: transform .25s cubic-bezier(.4, 0, .2, 1);
+      box-shadow: 0 2px 8px rgba(31, 63, 174, .3);
+    }
+
+    .lang-switch[data-lang="en"] .lang-thumb {
+      transform: translateX(100%);
+    }
+
+    .lang-switch button {
+      position: relative;
+      z-index: 1;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      padding: 7px 16px;
+      color: var(--ink-dim);
+      font: inherit;
+      border-radius: 20px;
+      transition: color .2s ease;
+      min-width: 44px;
+    }
+
+    .lang-switch button.active {
+      color: #fff;
+    }
+
+    .score-chip {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13px;
+      color: var(--ink-dim);
+      cursor: pointer;
+      background: var(--surface-2);
+      border: 1px solid var(--line);
+      border-radius: 24px;
+      padding: 9px 16px;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .score-chip:hover {
+      border-color: var(--accent-line);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .score-chip .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--fail);
+      flex: none;
+      box-shadow: 0 0 0 3px rgba(172, 58, 49, .15);
+      transition: background .3s ease, box-shadow .3s ease;
+    }
+
+    .score-chip b {
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      font-weight: 500;
+      padding: 10px 16px;
+      border-radius: 9px;
+      border: 1px solid var(--line-strong);
+      background: var(--surface);
+      color: var(--ink);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      transition: background .15s ease, border-color .15s ease, transform .12s ease, box-shadow .15s ease;
+    }
+
+    .btn svg {
+      flex: none;
+    }
+
+    .btn:hover {
+      background: var(--surface-2);
+      border-color: var(--ink-faint);
+      transform: translateY(-1px);
+    }
+
+    .btn:active {
+      transform: translateY(0);
+    }
+
+    .btn.primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+      border-color: var(--accent);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(31, 63, 174, .28);
+    }
+
+    .btn.primary:hover {
+      background: linear-gradient(135deg, var(--accent-hover), var(--accent-hover));
+      box-shadow: 0 6px 18px rgba(31, 63, 174, .36);
+    }
+
+    .btn.ghost {
+      background: transparent;
+      border-color: var(--line);
+    }
+
+    /* ---------- MAIN GRID ---------- */
+    .main {
+      display: grid;
+      grid-template-columns: minmax(360px, 420px) minmax(0, 1fr) minmax(320px, 360px);
+      gap: 24px;
+      padding: 24px 32px 48px;
+      align-items: start;
+    }
+
+    @media(max-width:1200px) {
+      .main {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      box-shadow: 0 1px 2px rgba(20, 20, 30, .04);
+    }
+
+    /* FORM PANEL */
+    #formPanel {
+      padding: 28px;
+    }
+
+    .section-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 34px 0 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 24px;
+      border-top: 1px solid var(--line);
+    }
+
+    .section-label .label-text {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-label .label-text::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      flex: none;
+    }
+
+    #formPanel>.section-label:first-child {
+      margin-top: 0;
+      padding-top: 0;
+      border-top: none;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    .field:last-child {
+      margin-bottom: 0;
+    }
+
+    label {
+      display: block;
+      font-size: 13px;
+      color: var(--ink-dim);
+      margin: 0 0 6px;
+    }
+
+    input[type=text],
+    input[type=email],
+    input[type=tel],
+    textarea,
+    select {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      color: var(--ink);
+      border-radius: 8px;
+      padding: 11px 13px;
+      font-family: 'Inter', sans-serif;
+      font-size: 14px;
+      line-height: 1.4;
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 76px;
+      line-height: 1.6;
+    }
+
+    .row2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+
+    .row2:last-child {
+      margin-bottom: 0;
+    }
+
+    .row2 .field {
+      margin-bottom: 0;
+    }
+
+    .entry {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 18px;
+      margin-bottom: 14px;
+      background: var(--surface-2);
+      transition: border-color .15s ease, box-shadow .15s ease;
+    }
+
+    .entry:focus-within {
+      border-color: var(--accent-line);
+      box-shadow: 0 0 0 3px var(--accent-soft);
+    }
+
+    .entry:last-of-type {
+      margin-bottom: 0;
+    }
+
+    .entry-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .entry-top span {
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      font-family: 'IBM Plex Mono', monospace;
+      letter-spacing: .04em;
+    }
+
+    .mini-btn {
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      color: var(--ink-dim);
+      font-size: 12px;
+      padding: 5px 11px;
+      border-radius: 7px;
+      cursor: pointer;
+      transition: color .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .mini-btn:hover {
+      color: var(--fail);
+      border-color: var(--fail-line);
+      background: var(--fail-soft);
+    }
+
+    .add-btn {
+      width: 100%;
+      background: transparent;
+      border: 1.5px dashed var(--line-strong);
+      color: var(--ink-dim);
+      padding: 13px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 13.5px;
+      margin-top: 6px;
+      transition: border-color .15s ease, color .15s ease, background .15s ease;
+    }
+
+    .add-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-soft);
+    }
+
+    .photo-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .photo-preview {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      flex: none;
+      background: var(--surface);
+      border: 1px solid var(--line-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      font-size: 11px;
+      color: var(--ink-faint);
+    }
+
+    .photo-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .photo-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+
+    .photo-input {
+      font-size: 12px;
+      color: var(--ink-dim);
+    }
+
+    .checkbox-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 12px;
+    }
+
+    .checkbox-row input {
+      width: auto;
+    }
+
+    .checkbox-row label {
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .hint {
+      font-size: 12.5px;
+      color: var(--ink-faint);
+      margin-top: 8px;
+      line-height: 1.6;
+    }
+
+    /* PREVIEW PANEL */
+    #previewPanel {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      display: flex;
+      justify-content: center;
+      padding: 0;
+      position: sticky;
+      top: 88px;
+    }
+
+    .paper-wrap {
+      position: relative;
+      width: 100%;
+      max-width: 720px;
+    }
+
+    #cvPage {
+      background: var(--paper);
+      color: var(--cv-ink);
+      width: 100%;
+      min-height: 1000px;
+      padding: 64px 68px;
+      box-shadow: 0 1px 2px rgba(20, 20, 30, .06), 0 20px 48px rgba(20, 20, 30, .14);
+      border: 1px solid var(--line);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      animation: pageIn .35s ease;
+    }
+
+    @keyframes pageIn {
+      from {
+        opacity: .4;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    #cvPage.font-serif {
+      font-family: "Times New Roman", Times, serif;
+    }
+
+    .cv-header-row {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+    }
+
+    .cv-header-text {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .cv-photo {
+      width: 92px;
+      height: 92px;
+      border-radius: 50%;
+      flex: none;
+      object-fit: cover;
+      border: 1px solid #ddd;
+    }
+
+    .cv-name {
+      font-size: 27px;
+      font-weight: 700;
+      margin: 0 0 4px;
+      letter-spacing: .01em;
+    }
+
+    .cv-role {
+      font-size: 15px;
+      color: var(--cv-accent);
+      font-weight: 600;
+      margin: 0 0 10px;
+    }
+
+    .cv-contact {
+      font-size: 12.5px;
+      color: #444;
+      margin: 0 0 20px;
+    }
+
+    .cv-contact span:not(:last-child)::after {
+      content: " · ";
+      color: #999;
+    }
+
+    .cv-h2 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      color: var(--cv-accent);
+      border-bottom: 1.5px solid var(--cv-accent);
+      padding-bottom: 4px;
+      margin: 24px 0 12px;
+    }
+
+    .cv-h2:first-of-type {
+      margin-top: 20px;
+    }
+
+    .cv-item {
+      margin-bottom: 16px;
+    }
+
+    .cv-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .cv-item-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      font-size: 14px;
+    }
+
+    .cv-item-head b {
+      font-weight: 700;
+    }
+
+    .cv-item-date {
+      font-size: 12.5px;
+      color: #555;
+      white-space: nowrap;
+    }
+
+    .cv-item-sub {
+      font-size: 13px;
+      color: #444;
+      margin: 2px 0 7px;
+      font-style: italic;
+    }
+
+    .cv-item ul {
+      margin: 6px 0 0;
+      padding-left: 20px;
+    }
+
+    .cv-item li {
+      margin-bottom: 4px;
+    }
+
+    .cv-p {
+      margin: 0;
+      white-space: pre-wrap;
+    }
+
+    .cv-empty {
+      color: #ADADAD;
+      font-style: italic;
+      font-size: 13px;
+      text-align: center;
+      padding: 80px 0;
+    }
+
+    .scan-sweep {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      height: 40px;
+      background: linear-gradient(to bottom, rgba(31, 63, 174, .14), transparent);
+      pointer-events: none;
+      animation: sweep 1.8s ease-out 1;
+    }
+
+    @keyframes sweep {
+      0% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+
+      100% {
+        transform: translateY(1000px);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion:reduce) {
+      .scan-sweep {
+        display: none;
+      }
+
+      #cvPage {
+        animation: none;
+      }
+    }
+
+    /* ATS PANEL */
+    #atsPanel {
+      padding: 28px;
+      position: sticky;
+      top: 88px;
+    }
+
+    .ats-score-block {
+      text-align: center;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .ats-ring {
+      --pct: 0;
+      --ring-color: var(--fail);
+      width: 128px;
+      height: 128px;
+      border-radius: 50%;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: conic-gradient(var(--ring-color) calc(var(--pct)*1%), var(--surface-2) 0);
+      transition: background .4s ease;
+    }
+
+    .ats-ring-inner {
+      width: 102px;
+      height: 102px;
+      border-radius: 50%;
+      background: var(--surface);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .ats-score-num {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--ink);
+    }
+
+    .ats-score-label {
+      font-size: 10.5px;
+      color: var(--ink-dim);
+      margin-top: 16px;
+      letter-spacing: .04em;
+      text-align: center;
+    }
+
+    .ats-stamp {
+      display: none;
+      margin: 18px auto 4px;
+      width: 112px;
+      height: 112px;
+      border-radius: 50%;
+      border: 3px double var(--success);
+      color: var(--success);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      transform: rotate(-9deg);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      font-weight: 600;
+      letter-spacing: .05em;
+      line-height: 1.5;
+      mix-blend-mode: multiply;
+      opacity: .9;
+    }
+
+    .ats-stamp.show {
+      display: flex;
+    }
+
+    .ats-check {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      padding: 12px 0;
+      border-bottom: 1px solid var(--line);
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .ats-check:last-child {
+      border-bottom: none;
+    }
+
+    .ats-tag {
+      flex: none;
+      font-size: 10px;
+      font-weight: 600;
+      padding: 2px 6px;
+      border-radius: 5px;
+      letter-spacing: .02em;
+      border: 1px solid transparent;
+    }
+
+    .ats-tag.ok {
+      background: var(--success-soft);
+      color: var(--success);
+      border-color: var(--success-line);
+    }
+
+    .ats-tag.no {
+      background: var(--fail-soft);
+      color: var(--fail);
+      border-color: var(--fail-line);
+    }
+
+    .ats-tag.warn {
+      background: var(--warn-soft);
+      color: var(--warn);
+      border-color: var(--warn-line);
+    }
+
+    .ats-check p {
+      margin: 0;
+      color: var(--ink-faint);
+    }
+
+    .ats-check.pass p {
+      color: var(--ink);
+    }
+
+    .ats-note {
+      margin-top: 24px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--surface-2);
+      font-size: 12.5px;
+      color: var(--ink-dim);
+      line-height: 1.65;
+    }
+
+    .ats-note b {
+      color: var(--ink);
+    }
+
+    /* PRINT */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #cvPage,
+      #cvPage * {
+        visibility: visible;
+      }
+
+      #cvPage {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        box-shadow: none;
+        border: none;
+        padding: 14mm 16mm;
+        min-height: 0;
+        animation: none;
+      }
+
+      @page {
+        margin: 0;
+        size: A4;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="topbar"></div>
+  <div class="app">
+
+    <header>
+      <div class="brand">
+        <span class="mark">&gt;_ATS</span>
+        <div>
+          <h1 data-i18n="brandTitle">CV Oluşturucu</h1>
+          <p data-i18n="brandSubtitle">Formu doldur, sağdaki kağıt anında güncellensin</p>
+        </div>
+      </div>
+
+      <div class="mid-controls">
+        <div class="lang-switch" id="langSwitch" data-lang="tr">
+          <span class="lang-thumb"></span>
+          <button type="button" id="langTr" class="active" data-lang-btn="tr">TR</button>
+          <button type="button" id="langEn" data-lang-btn="en">EN</button>
+        </div>
+
+        <div class="score-chip" id="scoreChip" data-i18n-title="scoreTooltip" title="Kontrol listesine git">
+          <span class="dot" id="scoreDot"></span>
+          <span data-i18n="scoreLabel">ATS skoru:</span> <b id="scoreText">0/10</b>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="btn ghost" id="fillSample">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path
+              d="M12 3v4M12 17v4M3 12h4M17 12h4M6.3 6.3l2.8 2.8M14.9 14.9l2.8 2.8M6.3 17.7l2.8-2.8M14.9 9.1l2.8-2.8" />
+          </svg>
+          <span data-i18n="btnSample">Örnek verilerle doldur</span>
+        </button>
+        <button class="btn ghost" id="clearAll">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2m3 0-1 14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2L4 6" />
+          </svg>
+          <span data-i18n="btnClear">Temizle</span>
+        </button>
+        <button class="btn" id="downloadTxt">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+            <path d="M14 2v6h6M9 15h6M9 11h6M9 19h3" />
+          </svg>
+          <span data-i18n="btnTxt">Metin (.txt) indir</span>
+        </button>
+        <button class="btn primary" id="downloadPdf">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 3v12m0 0-4-4m4 4 4-4M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2" />
+          </svg>
+          <span data-i18n="btnPdf">PDF olarak indir</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="main">
+
+      <!-- FORM (jsPDF: gerçek, seçilebilir metinli PDF üretmek için) -->
+      <div class="card" id="formPanel">
+        <div class="section-label"><span class="label-text" data-i18n="secPersonal">Kişisel bilgiler</span></div>
+        <div class="field">
+          <label data-i18n="lblFullName">Ad Soyad</label>
+          <input type="text" id="f_fullName" data-i18n-ph="phFullName" placeholder="Ayşe Yılmaz">
+        </div>
+        <div class="field">
+          <label data-i18n="lblJobTitle">Hedef pozisyon / unvan</label>
+          <input type="text" id="f_jobTitle" data-i18n-ph="phJobTitle" placeholder="Kıdemli Yazılım Mühendisi">
+        </div>
+        <div class="row2">
+          <div class="field"><label data-i18n="lblEmail">E-posta</label><input type="email" id="f_email"
+              data-i18n-ph="phEmail" placeholder="ayse@eposta.com"></div>
+          <div class="field"><label data-i18n="lblPhone">Telefon</label><input type="tel" id="f_phone"
+              data-i18n-ph="phPhone" placeholder="+90 5xx xxx xx xx"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label data-i18n="lblLocation">Şehir</label><input type="text" id="f_location"
+              data-i18n-ph="phLocation" placeholder="İstanbul, Türkiye"></div>
+          <div class="field"><label data-i18n="lblLinkedin">LinkedIn</label><input type="text" id="f_linkedin"
+              data-i18n-ph="phLinkedin" placeholder="linkedin.com/in/ayseyilmaz"></div>
+        </div>
+        <div class="field">
+          <label data-i18n="lblWebsite">Web sitesi / portföy (opsiyonel)</label>
+          <input type="text" id="f_website" data-i18n-ph="phWebsite" placeholder="ayseyilmaz.dev">
+        </div>
+        <div class="field">
+          <label data-i18n="lblPhoto">Fotoğraf (opsiyonel)</label>
+          <div class="photo-row">
+            <div class="photo-preview" id="photoPreview"><i data-i18n="photoNone">Yok</i></div>
+            <div class="photo-controls">
+              <input type="file" id="f_photo" accept="image/*" class="photo-input">
+              <button class="mini-btn" id="removePhoto" style="display:none;width:fit-content;"
+                data-i18n="removePhoto">Fotoğrafı kaldır</button>
+            </div>
+          </div>
+          <div class="hint" data-i18n="photoHint">Birçok ATS sistemi fotoğrafları okuyamaz ve bazı işverenler
+            tarafsızlık nedeniyle fotoğrafsız CV tercih eder. Yalnızca fotoğraf isteyen başvurular veya insan gözüyle
+            incelenecek CV'ler için ekleyin.</div>
+        </div>
+
+        <div class="section-label"><span class="label-text" data-i18n="secSummary">Özet</span></div>
+        <div class="field">
+          <label data-i18n="lblSummary">Profesyonel özet (2-4 cümle)</label>
+          <textarea id="f_summary" data-i18n-ph="phSummary"
+            placeholder="5 yıllık deneyime sahip, ölçeklenebilir web uygulamaları geliştiren yazılım mühendisi..."></textarea>
+        </div>
+
+        <div class="section-label">
+          <span class="label-text" data-i18n="secExperience">Deneyim</span>
+          <button class="mini-btn" id="addExpTop" data-i18n="addShort">+ ekle</button>
+        </div>
+        <div id="expList"></div>
+        <button class="add-btn" id="addExp" data-i18n="addExp">+ İş deneyimi ekle</button>
+
+        <div class="section-label"><span class="label-text" data-i18n="secEducation">Eğitim</span></div>
+        <div id="eduList"></div>
+        <button class="add-btn" id="addEdu" data-i18n="addEdu">+ Eğitim bilgisi ekle</button>
+
+        <div class="section-label"><span class="label-text" data-i18n="secTechSkills">Teknik Beceriler</span></div>
+        <div class="field">
+          <label data-i18n="lblTechSkills">Virgülle ayırarak yazın</label>
+          <textarea id="f_technicalSkills" data-i18n-ph="phTechSkills"
+            placeholder="Python, SQL, Docker, AWS, React"></textarea>
+        </div>
+
+        <div class="section-label"><span class="label-text" data-i18n="secSoftSkills">Soft Skills</span></div>
+        <div class="field">
+          <label data-i18n="lblSoftSkills">Virgülle ayırarak yazın</label>
+          <textarea id="f_softSkills" data-i18n-ph="phSoftSkills"
+            placeholder="Takım Liderliği, İletişim, Problem Çözme, Zaman Yönetimi"></textarea>
+        </div>
+
+        <div class="section-label"><span class="label-text" data-i18n="secLanguages">Diller</span></div>
+        <div id="langList"></div>
+        <button class="add-btn" id="addLang" data-i18n="addLang">+ Dil ekle</button>
+
+        <div class="section-label"><span class="label-text" data-i18n="secCert">Sertifikalar</span></div>
+        <div id="certList"></div>
+        <button class="add-btn" id="addCert" data-i18n="addCert">+ Sertifika ekle</button>
+
+        <div class="section-label"><span class="label-text" data-i18n="secAppearance">Görünüm</span></div>
+        <div class="field">
+          <label data-i18n="lblFont">CV yazı tipi (ikisi de ATS-güvenli)</label>
+          <select id="f_font">
+            <option value="arial" data-i18n="fontArial">Arial / Helvetica</option>
+            <option value="serif" data-i18n="fontSerif">Times New Roman</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- PREVIEW -->
+      <div id="previewPanel">
+        <div class="paper-wrap">
+          <div id="cvPage" class="font-arial"></div>
+          <div class="scan-sweep" id="scanSweep"></div>
+        </div>
+      </div>
+
+      <!-- ATS CHECKLIST -->
+      <div class="card" id="atsPanel">
+        <div class="ats-score-block">
+          <div class="ats-ring" id="atsRing">
+            <div class="ats-ring-inner">
+              <div class="ats-score-num" id="bigScore">0/10</div>
+            </div>
+          </div>
+          <div class="ats-score-label" data-i18n="atsResultLabel">ATS TARAMA SONUCU</div>
+          <div class="ats-stamp" id="atsStamp">ATS<br>ONAYLI<br>✓</div>
+        </div>
+        <div id="checkList"></div>
+        <div class="ats-note">
+          <b data-i18n="atsNoteTitle">Neden önemli?</b> <span data-i18n="atsNoteText">Şirketlerin çoğu, CV'leri bir
+            insana ulaşmadan önce bir ATS (Aday Takip Sistemi) yazılımından geçirir. Tek sütun düzen, standart başlıklar
+            ve düz metin, CV'nizin doğru ayrıştırılmasını sağlar.</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- PDF üretimi için: gerçek, seçilebilir metin içeren PDF oluşturur (tarayıcı yazdırma diyaloğuna bağımlı değil) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script>
+    (function () {
+
+      /* ---------------- I18N ---------------- */
+      const I18N = {
+        tr: {
+          pageTitle: "ATS CV Oluşturucu",
+          brandTitle: "CV Oluşturucu",
+          brandSubtitle: "Formu doldur, sağdaki kağıt anında güncellensin",
+          scoreLabel: "ATS skoru:",
+          scoreTooltip: "Kontrol listesine git",
+          btnSample: "Örnek verilerle doldur",
+          btnClear: "Temizle",
+          btnTxt: "Metin (.txt) indir",
+          btnPdf: "PDF olarak indir",
+
+          secPersonal: "Kişisel bilgiler",
+          lblFullName: "Ad Soyad", phFullName: "Ayşe Yılmaz",
+          lblJobTitle: "Hedef pozisyon / unvan", phJobTitle: "Kıdemli Yazılım Mühendisi",
+          lblEmail: "E-posta", phEmail: "ayse@eposta.com",
+          lblPhone: "Telefon", phPhone: "+90 5xx xxx xx xx",
+          lblLocation: "Şehir", phLocation: "İstanbul, Türkiye",
+          lblLinkedin: "LinkedIn", phLinkedin: "linkedin.com/in/ayseyilmaz",
+          lblWebsite: "Web sitesi / portföy (opsiyonel)", phWebsite: "ayseyilmaz.dev",
+          lblPhoto: "Fotoğraf (opsiyonel)",
+          photoNone: "Yok",
+          removePhoto: "Fotoğrafı kaldır",
+          photoHint: "Birçok ATS sistemi fotoğrafları okuyamaz ve bazı işverenler tarafsızlık nedeniyle fotoğrafsız CV tercih eder. Yalnızca fotoğraf isteyen başvurular veya insan gözüyle incelenecek CV'ler için ekleyin.",
+          photoAlert: "Lütfen 4MB'tan küçük bir görsel seçin.",
+
+          secSummary: "Özet",
+          lblSummary: "Profesyonel özet (2-4 cümle)",
+          phSummary: "5 yıllık deneyime sahip, ölçeklenebilir web uygulamaları geliştiren yazılım mühendisi...",
+
+          secExperience: "Deneyim",
+          addShort: "+ ekle",
+          addExp: "+ İş deneyimi ekle",
+          expEntry: "DENEYİM",
+          delete: "Sil",
+          lblPosition: "Pozisyon", phPosition: "Yazılım Mühendisi",
+          lblCompany: "Şirket", phCompany: "Şirket A.Ş.",
+          lblCity: "Şehir", phCity: "İstanbul",
+          lblStart: "Başlangıç", phStartExp: "Oca 2022",
+          lblEnd: "Bitiş", phEndExp: "Halen",
+          currentJob: "Halen bu pozisyonda çalışıyorum",
+          lblBullets: "Sorumluluklar / başarılar (her satır bir madde)",
+          phBullets: "Mikroservis mimarisine geçişi yöneterek yanıt sürelerini yüzde 40 azalttım",
+          noExp: "Henüz deneyim eklenmedi.",
+
+          secEducation: "Eğitim",
+          addEdu: "+ Eğitim bilgisi ekle",
+          eduEntry: "EĞİTİM",
+          lblDegree: "Bölüm / Derece", phDegree: "Bilgisayar Mühendisliği, Lisans",
+          lblSchool: "Okul", phSchool: "Boğaziçi Üniversitesi",
+          phStartEdu: "2016", phEndEdu: "2020",
+          noEdu: "Henüz eğitim bilgisi eklenmedi.",
+
+          secTechSkills: "Teknik Beceriler",
+          lblTechSkills: "Virgülle ayırarak yazın",
+          phTechSkills: "Python, SQL, Docker, AWS, React",
+
+          secSoftSkills: "Soft Skills",
+          lblSoftSkills: "Virgülle ayırarak yazın",
+          phSoftSkills: "Takım Liderliği, İletişim, Problem Çözme, Zaman Yönetimi",
+
+          secLanguages: "Diller",
+          addLang: "+ Dil ekle",
+          langEntry: "DİL",
+          lblLanguage: "Dil", phLanguage: "İngilizce",
+          lblLevel: "Seviye", phLevel: "İleri düzey",
+          noLang: "Henüz dil eklenmedi.",
+
+          secCert: "Sertifikalar",
+          addCert: "+ Sertifika ekle",
+          certEntry: "SERTİFİKA",
+          lblCertName: "Sertifika adı", phCertName: "AWS Certified Solutions Architect",
+          lblIssuer: "Kurum", phIssuer: "Amazon Web Services",
+          lblYear: "Yıl", phYear: "2023",
+          noCert: "Henüz sertifika eklenmedi.",
+
+          secAppearance: "Görünüm",
+          lblFont: "CV yazı tipi (ikisi de ATS-güvenli)",
+          fontArial: "Arial / Helvetica",
+          fontSerif: "Times New Roman",
+
+          cvEmpty: "Soldaki formu doldurdukça CV'niz burada canlı olarak görünecek.",
+          cvNamePh: "Ad Soyad",
+          cvPositionPh: "Pozisyon",
+          cvDegreePh: "Bölüm",
+          present: "Halen",
+
+          atsResultLabel: "ATS TARAMA SONUCU",
+          atsNoteTitle: "Neden önemli?",
+          atsNoteText: "Şirketlerin çoğu, CV'leri bir insana ulaşmadan önce bir ATS (Aday Takip Sistemi) yazılımından geçirir. Tek sütun düzen, standart başlıklar ve düz metin, CV'nizin doğru ayrıştırılmasını sağlar.",
+          atsStamp: "ATS<br>ONAYLI<br>✓",
+          tagOk: "OK", tagWarn: "DİKKAT", tagNo: "EKSİK",
+
+          chkName: "Ad Soyad girildi",
+          chkEmail: "Geçerli e-posta girildi",
+          chkPhone: "Telefon numarası girildi",
+          chkExp: "En az bir iş deneyimi eklendi",
+          chkBullets: "Deneyimlerde madde madde başarılar var",
+          chkEdu: "En az bir eğitim bilgisi eklendi",
+          chkSummary: "Özet bölümü yeterince dolduruldu",
+          chkTechSkills: "Teknik beceriler listelendi",
+          chkSoftSkills: "Soft skills listelendi",
+          chkLayout: "Tek sütun, görsel/tablo içermeyen düzen",
+          chkPhoto: "Fotoğraf kullanılmıyor (ATS için önerilir)",
+
+          clearConfirm: "Tüm form içeriği silinecek. Emin misiniz?",
+
+          txtSummary: "ÖZET", txtExperience: "DENEYİM", txtEducation: "EĞİTİM",
+          txtTechSkills: "TEKNİK BECERİLER", txtSoftSkills: "SOFT SKILLS",
+          txtLanguages: "DİLLER", txtCerts: "SERTİFİKALAR", txtPresent: "Halen",
+          txtDefaultName: "Ad Soyad"
+        },
+        en: {
+          pageTitle: "ATS Resume Builder",
+          brandTitle: "CV Builder",
+          brandSubtitle: "Fill the form, watch the resume update live on the right",
+          scoreLabel: "ATS score:",
+          scoreTooltip: "Go to the checklist",
+          btnSample: "Fill with sample data",
+          btnClear: "Clear",
+          btnTxt: "Download text (.txt)",
+          btnPdf: "Download as PDF",
+
+          secPersonal: "Personal information",
+          lblFullName: "Full name", phFullName: "Jane Doe",
+          lblJobTitle: "Target role / title", phJobTitle: "Senior Software Engineer",
+          lblEmail: "Email", phEmail: "jane@email.com",
+          lblPhone: "Phone", phPhone: "+1 555 123 4567",
+          lblLocation: "City", phLocation: "New York, USA",
+          lblLinkedin: "LinkedIn", phLinkedin: "linkedin.com/in/janedoe",
+          lblWebsite: "Website / portfolio (optional)", phWebsite: "janedoe.dev",
+          lblPhoto: "Photo (optional)",
+          photoNone: "None",
+          removePhoto: "Remove photo",
+          photoHint: "Many ATS systems can't read photos, and some employers prefer photo-free resumes for neutrality. Only add one if the application specifically asks for it or a human will review it.",
+          photoAlert: "Please choose an image smaller than 4MB.",
+
+          secSummary: "Summary",
+          lblSummary: "Professional summary (2-4 sentences)",
+          phSummary: "Software engineer with 5 years of experience building scalable web applications...",
+
+          secExperience: "Experience",
+          addShort: "+ add",
+          addExp: "+ Add work experience",
+          expEntry: "EXPERIENCE",
+          delete: "Delete",
+          lblPosition: "Position", phPosition: "Software Engineer",
+          lblCompany: "Company", phCompany: "Acme Inc.",
+          lblCity: "City", phCity: "New York",
+          lblStart: "Start", phStartExp: "Jan 2022",
+          lblEnd: "End", phEndExp: "Present",
+          currentJob: "I currently work in this role",
+          lblBullets: "Responsibilities / achievements (one bullet per line)",
+          phBullets: "Led the migration to a microservices architecture, cutting response times by 40%",
+          noExp: "No experience added yet.",
+
+          secEducation: "Education",
+          addEdu: "+ Add education",
+          eduEntry: "EDUCATION",
+          lblDegree: "Degree / field", phDegree: "B.Sc. Computer Engineering",
+          lblSchool: "School", phSchool: "Boston University",
+          phStartEdu: "2016", phEndEdu: "2020",
+          noEdu: "No education added yet.",
+
+          secTechSkills: "Technical Skills",
+          lblTechSkills: "Separate with commas",
+          phTechSkills: "Python, SQL, Docker, AWS, React",
+
+          secSoftSkills: "Soft Skills",
+          lblSoftSkills: "Separate with commas",
+          phSoftSkills: "Team Leadership, Communication, Problem Solving, Time Management",
+
+          secLanguages: "Languages",
+          addLang: "+ Add language",
+          langEntry: "LANGUAGE",
+          lblLanguage: "Language", phLanguage: "English",
+          lblLevel: "Level", phLevel: "Advanced",
+          noLang: "No language added yet.",
+
+          secCert: "Certifications",
+          addCert: "+ Add certification",
+          certEntry: "CERTIFICATION",
+          lblCertName: "Certification name", phCertName: "AWS Certified Solutions Architect",
+          lblIssuer: "Issuer", phIssuer: "Amazon Web Services",
+          lblYear: "Year", phYear: "2023",
+          noCert: "No certification added yet.",
+
+          secAppearance: "Appearance",
+          lblFont: "Resume font (both ATS-safe)",
+          fontArial: "Arial / Helvetica",
+          fontSerif: "Times New Roman",
+
+          cvEmpty: "Your resume will appear here live as you fill out the form on the left.",
+          cvNamePh: "Full Name",
+          cvPositionPh: "Position",
+          cvDegreePh: "Degree",
+          present: "Present",
+
+          atsResultLabel: "ATS SCAN RESULT",
+          atsNoteTitle: "Why does this matter?",
+          atsNoteText: "Most companies run resumes through an ATS (Applicant Tracking System) before a human ever sees them. A single-column layout, standard headings, and plain text help ensure your resume is parsed correctly.",
+          atsStamp: "ATS<br>PASSED<br>✓",
+          tagOk: "OK", tagWarn: "WARNING", tagNo: "MISSING",
+
+          chkName: "Full name entered",
+          chkEmail: "Valid email entered",
+          chkPhone: "Phone number entered",
+          chkExp: "At least one work experience added",
+          chkBullets: "Experience entries include bullet achievements",
+          chkEdu: "At least one education entry added",
+          chkSummary: "Summary section sufficiently filled",
+          chkTechSkills: "Technical skills listed",
+          chkSoftSkills: "Soft skills listed",
+          chkLayout: "Single-column layout, no images/tables",
+          chkPhoto: "No photo used (recommended for ATS)",
+
+          clearConfirm: "All form content will be deleted. Are you sure?",
+
+          txtSummary: "SUMMARY", txtExperience: "EXPERIENCE", txtEducation: "EDUCATION",
+          txtTechSkills: "TECHNICAL SKILLS", txtSoftSkills: "SOFT SKILLS",
+          txtLanguages: "LANGUAGES", txtCerts: "CERTIFICATIONS", txtPresent: "Present",
+          txtDefaultName: "Full Name"
+        }
+      };
+
+      let currentLang = "tr";
+      const t = key => (I18N[currentLang] && I18N[currentLang][key] !== undefined) ? I18N[currentLang][key] : key;
+
+      function applyStaticI18n() {
+        document.documentElement.lang = currentLang;
+        document.title = t("pageTitle");
+        $("#pageTitle").textContent = t("pageTitle");
+        document.querySelectorAll("[data-i18n]").forEach(el => {
+          el.textContent = t(el.getAttribute("data-i18n"));
+        });
+        document.querySelectorAll("[data-i18n-ph]").forEach(el => {
+          el.setAttribute("placeholder", t(el.getAttribute("data-i18n-ph")));
+        });
+        document.querySelectorAll("[data-i18n-title]").forEach(el => {
+          el.setAttribute("title", t(el.getAttribute("data-i18n-title")));
+        });
+      }
+
+      /* ---------------- STATE ---------------- */
+      const state = {
+        fullName: "", jobTitle: "", email: "", phone: "", location: "", linkedin: "", website: "",
+        summary: "", technicalSkills: "", softSkills: "", font: "arial", photo: null,
+        experience: [], education: [], languages: [], certifications: []
+      };
+      let uidCounter = 1;
+      const uid = () => "id" + (uidCounter++);
+
+      function newExp() { return { id: uid(), title: "", company: "", location: "", start: "", end: "", current: false, bullets: "" }; }
+      function newEdu() { return { id: uid(), degree: "", school: "", location: "", start: "", end: "" }; }
+      function newLang() { return { id: uid(), name: "", level: "" }; }
+      function newCert() { return { id: uid(), name: "", issuer: "", year: "" }; }
+
+      state.experience.push(newExp());
+      state.education.push(newEdu());
+
+      const $ = sel => document.querySelector(sel);
+      const esc = s => (s || "").replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+
+      /* ---------------- FORM RENDERING ---------------- */
+      function renderExpList() {
+        const el = $("#expList");
+        el.innerHTML = state.experience.map((e, i) => `
+      <div class="entry" data-kind="exp" data-id="${e.id}">
+        <div class="entry-top"><span>${t("expEntry")} ${i + 1}</span><button class="mini-btn" data-action="remove-exp" data-id="${e.id}">${t("delete")}</button></div>
+        <div class="field">
+          <label>${t("lblPosition")}</label>
+          <input type="text" data-field="title" value="${esc(e.title)}" placeholder="${t("phPosition")}">
+        </div>
+        <div class="row2">
+          <div class="field"><label>${t("lblCompany")}</label><input type="text" data-field="company" value="${esc(e.company)}" placeholder="${t("phCompany")}"></div>
+          <div class="field"><label>${t("lblCity")}</label><input type="text" data-field="location" value="${esc(e.location)}" placeholder="${t("phCity")}"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>${t("lblStart")}</label><input type="text" data-field="start" value="${esc(e.start)}" placeholder="${t("phStartExp")}"></div>
+          <div class="field"><label>${t("lblEnd")}</label><input type="text" data-field="end" value="${esc(e.end)}" placeholder="${t("phEndExp")}" ${e.current ? "disabled" : ""}></div>
+        </div>
+        <div class="checkbox-row">
+          <input type="checkbox" data-field="current" ${e.current ? "checked" : ""} id="cur_${e.id}">
+          <label for="cur_${e.id}">${t("currentJob")}</label>
+        </div>
+        <div class="field" style="margin-top:14px;">
+          <label>${t("lblBullets")}</label>
+          <textarea data-field="bullets" placeholder="${t("phBullets")}">${esc(e.bullets)}</textarea>
+        </div>
+      </div>
+    `).join("") || `<div class="hint">${t("noExp")}</div>`;
+      }
+
+      function renderEduList() {
+        const el = $("#eduList");
+        el.innerHTML = state.education.map((e, i) => `
+      <div class="entry" data-kind="edu" data-id="${e.id}">
+        <div class="entry-top"><span>${t("eduEntry")} ${i + 1}</span><button class="mini-btn" data-action="remove-edu" data-id="${e.id}">${t("delete")}</button></div>
+        <div class="field">
+          <label>${t("lblDegree")}</label>
+          <input type="text" data-field="degree" value="${esc(e.degree)}" placeholder="${t("phDegree")}">
+        </div>
+        <div class="row2">
+          <div class="field"><label>${t("lblSchool")}</label><input type="text" data-field="school" value="${esc(e.school)}" placeholder="${t("phSchool")}"></div>
+          <div class="field"><label>${t("lblCity")}</label><input type="text" data-field="location" value="${esc(e.location)}" placeholder="${t("phCity")}"></div>
+        </div>
+        <div class="row2">
+          <div class="field"><label>${t("lblStart")}</label><input type="text" data-field="start" value="${esc(e.start)}" placeholder="${t("phStartEdu")}"></div>
+          <div class="field"><label>${t("lblEnd")}</label><input type="text" data-field="end" value="${esc(e.end)}" placeholder="${t("phEndEdu")}"></div>
+        </div>
+      </div>
+    `).join("") || `<div class="hint">${t("noEdu")}</div>`;
+      }
+
+      function renderLangList() {
+        const el = $("#langList");
+        el.innerHTML = state.languages.map((l, i) => `
+      <div class="entry" data-kind="lang" data-id="${l.id}">
+        <div class="entry-top"><span>${t("langEntry")} ${i + 1}</span><button class="mini-btn" data-action="remove-lang" data-id="${l.id}">${t("delete")}</button></div>
+        <div class="row2">
+          <div class="field"><label>${t("lblLanguage")}</label><input type="text" data-field="name" value="${esc(l.name)}" placeholder="${t("phLanguage")}"></div>
+          <div class="field"><label>${t("lblLevel")}</label><input type="text" data-field="level" value="${esc(l.level)}" placeholder="${t("phLevel")}"></div>
+        </div>
+      </div>
+    `).join("") || `<div class="hint">${t("noLang")}</div>`;
+      }
+
+      function renderCertList() {
+        const el = $("#certList");
+        el.innerHTML = state.certifications.map((c, i) => `
+      <div class="entry" data-kind="cert" data-id="${c.id}">
+        <div class="entry-top"><span>${t("certEntry")} ${i + 1}</span><button class="mini-btn" data-action="remove-cert" data-id="${c.id}">${t("delete")}</button></div>
+        <div class="field">
+          <label>${t("lblCertName")}</label>
+          <input type="text" data-field="name" value="${esc(c.name)}" placeholder="${t("phCertName")}">
+        </div>
+        <div class="row2">
+          <div class="field"><label>${t("lblIssuer")}</label><input type="text" data-field="issuer" value="${esc(c.issuer)}" placeholder="${t("phIssuer")}"></div>
+          <div class="field"><label>${t("lblYear")}</label><input type="text" data-field="year" value="${esc(c.year)}" placeholder="${t("phYear")}"></div>
+        </div>
+      </div>
+    `).join("") || `<div class="hint">${t("noCert")}</div>`;
+      }
+
+      function renderAllLists() {
+        renderExpList(); renderEduList(); renderLangList(); renderCertList();
+      }
+
+      /* ---------------- CV PREVIEW ---------------- */
+      function renderCV() {
+        const page = $("#cvPage");
+        page.className = state.font === "serif" ? "font-serif" : "font-arial";
+
+        const contactBits = [state.email, state.phone, state.location, state.linkedin, state.website]
+          .filter(Boolean).map(esc).map(txt => `<span>${txt}</span>`).join("");
+
+        const hasContent = state.fullName || state.jobTitle || contactBits || state.summary.trim() ||
+          state.experience.some(e => e.title || e.company) || state.education.some(e => e.degree || e.school);
+
+        if (!hasContent) {
+          page.innerHTML = `<div class="cv-empty">${t("cvEmpty")}</div>`;
+          return;
+        }
+
+        let html = "";
+        const headerText = `<div class="cv-header-text">
+        <div class="cv-name">${esc(state.fullName) || t("cvNamePh")}</div>
+        ${state.jobTitle ? `<div class="cv-role">${esc(state.jobTitle)}</div>` : ""}
+        ${contactBits ? `<div class="cv-contact">${contactBits}</div>` : ""}
+      </div>`;
+        if (state.photo) {
+          html += `<div class="cv-header-row"><img class="cv-photo" src="${state.photo}" alt="">${headerText}</div>`;
+        } else {
+          html += headerText;
+        }
+
+        if (state.summary.trim()) {
+          html += `<div class="cv-h2">${t("secSummary")}</div><p class="cv-p">${esc(state.summary)}</p>`;
+        }
+
+        const exps = state.experience.filter(e => e.title || e.company);
+        if (exps.length) {
+          html += `<div class="cv-h2">${t("secExperience")}</div>`;
+          exps.forEach(e => {
+            const dateStr = [e.start, e.current ? t("present") : e.end].filter(Boolean).join(" – ");
+            const bulletLines = e.bullets.split(/\r?\n/).map(b => b.trim()).filter(Boolean);
+            html += `<div class="cv-item">
+          <div class="cv-item-head"><b>${esc(e.title) || t("cvPositionPh")}</b><span class="cv-item-date">${esc(dateStr)}</span></div>
+          <div class="cv-item-sub">${[esc(e.company), esc(e.location)].filter(Boolean).join(" · ")}</div>
+          ${bulletLines.length ? `<ul>${bulletLines.map(b => `<li>${esc(b)}</li>`).join("")}</ul>` : ""}
+        </div>`;
+          });
+        }
+
+        const edus = state.education.filter(e => e.degree || e.school);
+        if (edus.length) {
+          html += `<div class="cv-h2">${t("secEducation")}</div>`;
+          edus.forEach(e => {
+            const dateStr = [e.start, e.end].filter(Boolean).join(" – ");
+            html += `<div class="cv-item">
+          <div class="cv-item-head"><b>${esc(e.degree) || t("cvDegreePh")}</b><span class="cv-item-date">${esc(dateStr)}</span></div>
+          <div class="cv-item-sub">${[esc(e.school), esc(e.location)].filter(Boolean).join(" · ")}</div>
+        </div>`;
+          });
+        }
+
+        if (state.technicalSkills.trim()) {
+          html += `<div class="cv-h2">${t("secTechSkills")}</div><p class="cv-p">${esc(state.technicalSkills.split(",").map(s => s.trim()).filter(Boolean).join(" · "))}</p>`;
+        }
+
+        if (state.softSkills.trim()) {
+          html += `<div class="cv-h2">${t("secSoftSkills")}</div><p class="cv-p">${esc(state.softSkills.split(",").map(s => s.trim()).filter(Boolean).join(" · "))}</p>`;
+        }
+
+        const langs = state.languages.filter(l => l.name);
+        if (langs.length) {
+          html += `<div class="cv-h2">${t("secLanguages")}</div><p class="cv-p">${langs.map(l => esc(l.name) + (l.level ? ` (${esc(l.level)})` : "")).join(" · ")}</p>`;
+        }
+
+        const certs = state.certifications.filter(c => c.name);
+        if (certs.length) {
+          html += `<div class="cv-h2">${t("secCert")}</div><p class="cv-p">${certs.map(c => [esc(c.name), esc(c.issuer), esc(c.year)].filter(Boolean).join(" — ")).join(String.fromCharCode(10))}</p>`;
+        }
+
+        page.innerHTML = html;
+      }
+
+      /* ---------------- ATS CHECKLIST ---------------- */
+      function computeChecks() {
+        const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(state.email.trim());
+        return [
+          { label: t("chkName"), pass: state.fullName.trim() !== "" },
+          { label: t("chkEmail"), pass: emailOk },
+          { label: t("chkPhone"), pass: state.phone.trim() !== "" },
+          { label: t("chkExp"), pass: state.experience.some(e => e.title && e.company) },
+          { label: t("chkBullets"), pass: state.experience.some(e => e.bullets.trim() !== "") },
+          { label: t("chkEdu"), pass: state.education.some(e => e.degree && e.school) },
+          { label: t("chkSummary"), pass: state.summary.trim().length > 20 },
+          { label: t("chkTechSkills"), pass: state.technicalSkills.trim() !== "" },
+          { label: t("chkSoftSkills"), pass: state.softSkills.trim() !== "" },
+          { label: t("chkLayout"), pass: true },
+          { label: t("chkPhoto"), pass: !state.photo, warn: !!state.photo },
+        ];
+      }
+
+      function renderChecklist() {
+        const checks = computeChecks();
+        const passed = checks.filter(c => c.pass).length;
+        const total = checks.length;
+        const pct = Math.round((passed / total) * 100);
+
+        $("#checkList").innerHTML = checks.map(c => {
+          const tagClass = c.pass ? "ok" : (c.warn ? "warn" : "no");
+          const tagText = c.pass ? t("tagOk") : (c.warn ? t("tagWarn") : t("tagNo"));
+          return `
+      <div class="ats-check ${c.pass ? "pass" : ""}">
+        <span class="ats-tag ${tagClass}">${tagText}</span>
+        <p>${c.label}</p>
+      </div>`;
+        }).join("");
+
+        const color = pct >= 80 ? "var(--accent)" : pct >= 45 ? "var(--warn)" : "var(--fail)";
+        $("#bigScore").textContent = `${passed}/${total}`;
+        $("#scoreText").textContent = `${passed}/${total}`;
+        $("#scoreDot").style.background = color;
+        $("#atsRing").style.setProperty("--pct", pct);
+        $("#atsRing").style.setProperty("--ring-color", color);
+        $("#atsStamp").innerHTML = t("atsStamp");
+        $("#atsStamp").classList.toggle("show", passed === total);
+      }
+
+      function renderAll() {
+        renderCV();
+        renderChecklist();
+      }
+
+      /* ---------------- LANGUAGE SWITCH ---------------- */
+      function setLang(lang) {
+        currentLang = lang;
+        $("#langSwitch").dataset.lang = lang;
+        $("#langTr").classList.toggle("active", lang === "tr");
+        $("#langEn").classList.toggle("active", lang === "en");
+        applyStaticI18n();
+        updatePhotoPreview();
+        renderAllLists();
+        renderAll();
+      }
+      $("#langTr").addEventListener("click", () => setLang("tr"));
+      $("#langEn").addEventListener("click", () => setLang("en"));
+
+      /* ---------------- EVENTS ---------------- */
+      const simpleFields = ["fullName", "jobTitle", "email", "phone", "location", "linkedin", "website", "summary", "technicalSkills", "softSkills"];
+      simpleFields.forEach(f => {
+        const el = $("#f_" + f);
+        el.addEventListener("input", () => { state[f] = el.value; renderAll(); });
+      });
+      $("#f_font").addEventListener("change", e => { state.font = e.target.value; renderAll(); });
+
+      function updatePhotoPreview() {
+        const box = $("#photoPreview");
+        box.innerHTML = state.photo ? `<img src="${state.photo}" alt="">` : `<i>${t("photoNone")}</i>`;
+        $("#removePhoto").style.display = state.photo ? "inline-block" : "none";
+      }
+      $("#f_photo").addEventListener("change", e => {
+        const file = e.target.files && e.target.files[0];
+        if (!file) return;
+        if (file.size > 4 * 1024 * 1024) {
+          alert(t("photoAlert"));
+          e.target.value = "";
+          return;
+        }
+        const reader = new FileReader();
+        reader.onload = () => {
+          state.photo = reader.result;
+          updatePhotoPreview();
+          renderAll();
+        };
+        reader.readAsDataURL(file);
+      });
+      $("#removePhoto").addEventListener("click", () => {
+        state.photo = null;
+        $("#f_photo").value = "";
+        updatePhotoPreview();
+        renderAll();
+      });
+
+      function findItem(arr, id) { return arr.find(x => x.id === id); }
+
+      document.addEventListener("input", e => {
+        const entry = e.target.closest(".entry");
+        if (!entry) return;
+        const kind = entry.dataset.kind, id = entry.dataset.id, field = e.target.dataset.field;
+        if (!field) return;
+        const map = { exp: state.experience, edu: state.education, lang: state.languages, cert: state.certifications };
+        const item = findItem(map[kind], id);
+        if (!item) return;
+        if (field === "current") {
+          item.current = e.target.checked;
+          const endInput = entry.querySelector('[data-field="end"]');
+          if (endInput) endInput.disabled = item.current;
+        } else {
+          item[field] = e.target.value;
+        }
+        renderAll();
+      });
+
+      document.addEventListener("click", e => {
+        const btn = e.target.closest("[data-action]");
+        if (!btn) return;
+        const id = btn.dataset.id, action = btn.dataset.action;
+        if (action === "remove-exp") { state.experience = state.experience.filter(x => x.id !== id); renderExpList(); }
+        if (action === "remove-edu") { state.education = state.education.filter(x => x.id !== id); renderEduList(); }
+        if (action === "remove-lang") { state.languages = state.languages.filter(x => x.id !== id); renderLangList(); }
+        if (action === "remove-cert") { state.certifications = state.certifications.filter(x => x.id !== id); renderCertList(); }
+        renderAll();
+      });
+
+      $("#addExp").addEventListener("click", () => { state.experience.push(newExp()); renderExpList(); renderAll(); });
+      $("#addExpTop").addEventListener("click", () => { state.experience.push(newExp()); renderExpList(); renderAll(); });
+      $("#addEdu").addEventListener("click", () => { state.education.push(newEdu()); renderEduList(); renderAll(); });
+      $("#addLang").addEventListener("click", () => { state.languages.push(newLang()); renderLangList(); renderAll(); });
+      $("#addCert").addEventListener("click", () => { state.certifications.push(newCert()); renderCertList(); renderAll(); });
+
+      $("#scoreChip").addEventListener("click", () => {
+        document.querySelector("#atsPanel").scrollIntoView({ behavior: "smooth", block: "start" });
+      });
+
+      $("#clearAll").addEventListener("click", () => {
+        if (!confirm(t("clearConfirm"))) return;
+        simpleFields.forEach(f => { state[f] = ""; $("#f_" + f).value = ""; });
+        state.experience = [newExp()]; state.education = [newEdu()]; state.languages = []; state.certifications = [];
+        state.photo = null; $("#f_photo").value = ""; updatePhotoPreview();
+        renderAllLists(); renderAll();
+      });
+
+      $("#fillSample").addEventListener("click", () => {
+        state.fullName = "Elif Kaya"; state.jobTitle = "Kıdemli Ürün Yöneticisi";
+        state.email = "elif.kaya@eposta.com"; state.phone = "+90 532 123 45 67";
+        state.location = "İstanbul, Türkiye"; state.linkedin = "linkedin.com/in/elifkaya"; state.website = "elifkaya.com";
+        state.summary = "7 yıllık deneyime sahip, B2B SaaS ürünlerinde uçtan uca ürün stratejisi yürüten ürün yöneticisi. Çapraz fonksiyonlu ekipleri yöneterek yıllık gelirde yüzde 25 artış sağladı.";
+        state.technicalSkills = "Ürün Stratejisi, SQL, A/B Testi, Agile/Scrum, Roadmap Yönetimi, Google Analytics";
+        state.softSkills = "Takım Liderliği, Kullanıcı Araştırması, İletişim, Stratejik Düşünme, Paydaş Yönetimi";
+        const nl = String.fromCharCode(10);
+        state.experience = [
+          {
+            id: uid(), title: "Kıdemli Ürün Yöneticisi", company: "Teknoloji A.Ş.", location: "İstanbul", start: "Mar 2022", end: "", current: true,
+            bullets: ["Yeni fatura modülünü sıfırdan lansmana taşıyarak aylık geliri yüzde 18 artırdı", "8 kişilik mühendislik ve tasarım ekibiyle çeyreklik yol haritasını yönetti", "Müşteri kaybını yüzde 12'den yüzde 6'ya düşüren bir onboarding akışı tasarladı"].join(nl)
+          },
+          {
+            id: uid(), title: "Ürün Yöneticisi", company: "Girişim Ltd.", location: "İstanbul", start: "Haz 2019", end: "Şub 2022", current: false,
+            bullets: ["İlk 50.000 kullanıcıya ulaşan mobil uygulamanın ürün yol haritasını oluşturdu", "Haftalık aktif kullanıcı sayısını 6 ayda yüzde 40 artıran özellik önceliklendirmesi yaptı"].join(nl)
+          }
+        ];
+        state.education = [{ id: uid(), degree: "İşletme, Yüksek Lisans", school: "Koç Üniversitesi", location: "İstanbul", start: "2017", end: "2019" }];
+        state.languages = [{ id: uid(), name: "Türkçe", level: "Anadil" }, { id: uid(), name: "İngilizce", level: "İleri düzey" }];
+        state.certifications = [{ id: uid(), name: "Certified Scrum Product Owner", issuer: "Scrum Alliance", year: "2021" }];
+
+        simpleFields.forEach(f => { $("#f_" + f).value = state[f]; });
+        renderAllLists(); renderAll();
+      });
+
+      /* ---------------- PDF ÜRETİMİ (jsPDF) ----------------
+         Tarayıcı yazdırma diyaloğuna / window.open'a bağımlı DEĞİL.
+         Gerçek, seçilebilir metin çizer -> hem popup engelleyiciden etkilenmez
+         hem de ATS sistemlerinin metni okuyabildiği bir PDF üretir. */
+
+      function dataUrlMime(dataUrl) {
+        const m = /^data:([^;]+);/.exec(dataUrl || "");
+        if (!m) return "PNG";
+        if (m[1].includes("png")) return "PNG";
+        if (m[1].includes("webp")) return "WEBP";
+        return "JPEG";
+      }
+
+      /* jsPDF'nin dahili Helvetica/Times fontları Türkçe'ye özgü ı, İ, ş, ğ
+         harflerini İÇERMEZ (yalnızca Latin-1/WinAnsi seti desteklenir), bu yüzden
+         bu harfler "K1demli", "0stanbul" gibi bozuk çıkıyordu.
+         Çözüm: Türkçe karakterleri de kapsayan gerçek bir Unicode TTF fontunu
+         (Roboto) çalışma zamanında indirip PDF'e gömüyoruz.
+    
+         ÖNEMLİ: fonts.gstatic.com üzerindeki dosyalar Google'ın web için
+         böldüğü (subset) sürümlerdir. Varsayılan/otomatik olarak indirilen
+         dosya yalnızca "latin" alt kümesini içerir; İ, Ş, Ğ, Ü, Ö, Ç gibi
+         Latin Extended-A karakterleri "latin-ext" alt kümesindedir ve ayrı bir
+         dosyadır. Bu yüzden "Kıdemli" (ı = latin'de var) düzelirken "İstanbul",
+         "değerlendirme" gibi kelimeler hâlâ bozuk çıkıyordu.
+         Bunun yerine, harita etiketleri için çoklu dil desteğiyle derlenmiş,
+         BÖLÜNMEMİŞ (tüm Latin Extended-A karakterlerini içeren) bir Roboto TTF
+         kaynağı kullanıyoruz. */
+      const TR_FONT_REGULAR_URL = "https://raw.githubusercontent.com/openmaptiles/fonts/master/roboto/Roboto-Regular.ttf";
+      const TR_FONT_BOLD_URL = "https://raw.githubusercontent.com/openmaptiles/fonts/master/roboto/Roboto-Bold.ttf";
+      let trFontBytesPromise = null;
+
+      function arrayBufferToBase64(buffer) {
+        const bytes = new Uint8Array(buffer);
+        const chunkSize = 0x8000;
+        let binary = "";
+        for (let i = 0; i < bytes.length; i += chunkSize) {
+          binary += String.fromCharCode.apply(null, bytes.subarray(i, i + chunkSize));
+        }
+        return btoa(binary);
+      }
+
+      function loadTurkishFontBytes() {
+        if (!trFontBytesPromise) {
+          trFontBytesPromise = Promise.all([
+            fetch(TR_FONT_REGULAR_URL).then(r => { if (!r.ok) throw new Error("font fetch failed"); return r.arrayBuffer(); }),
+            fetch(TR_FONT_BOLD_URL).then(r => { if (!r.ok) throw new Error("font fetch failed"); return r.arrayBuffer(); })
+          ]).then(([regBuf, boldBuf]) => ({
+            regular: arrayBufferToBase64(regBuf),
+            bold: arrayBufferToBase64(boldBuf)
+          })).catch(err => {
+            trFontBytesPromise = null; // başarısız olursa bir sonraki denemede tekrar dene
+            throw err;
+          });
+        }
+        return trFontBytesPromise;
+      }
+
+      async function buildResumePdf() {
+        const { jsPDF } = window.jspdf || {};
+        if (!jsPDF) throw new Error("jsPDF not loaded");
+
+        const trFont = await loadTurkishFontBytes();
+        const fontFamily = "TRSans"; // Türkçe karakterleri destekleyen gömülü font (hem "Arial" hem "Serif" seçiminde kullanılır)
+        const doc = new jsPDF({ unit: "mm", format: "a4", orientation: "portrait", compress: true });
+        doc.addFileToVFS("TRSans-Regular.ttf", trFont.regular);
+        doc.addFont("TRSans-Regular.ttf", fontFamily, "normal");
+        doc.addFileToVFS("TRSans-Bold.ttf", trFont.bold);
+        doc.addFont("TRSans-Bold.ttf", fontFamily, "bold");
+
+        const pageWidth = 210, pageHeight = 297;
+        const marginX = 16, marginTop = 14, marginBottom = 16;
+        const contentWidth = pageWidth - marginX * 2;
+
+        const INK = [26, 26, 26], ACCENT = [40, 52, 74], GRAY_TXT = [68, 68, 68], GRAY_DATE = [85, 85, 85];
+
+        let y = marginTop;
+
+        function addPage() { doc.addPage(); y = marginTop; }
+        function ensure(need) { if (y + need > pageHeight - marginBottom) addPage(); }
+
+        function para(text, size, style, color, width, lh, x) {
+          x = x || marginX;
+          doc.setFont(fontFamily, style);
+          doc.setFontSize(size);
+          doc.setTextColor(color[0], color[1], color[2]);
+          const lines = doc.splitTextToSize(text, width);
+          lines.forEach(line => {
+            ensure(lh);
+            doc.text(line, x, y);
+            y += lh;
+          });
+        }
+
+        /* --- Fotoğraf (varsa, sağ üstte kare) --- */
+        let headerRight = pageWidth - marginX;
+        if (state.photo) {
+          try {
+            const photoSize = 24;
+            doc.addImage(state.photo, dataUrlMime(state.photo), pageWidth - marginX - photoSize, y, photoSize, photoSize, undefined, "FAST");
+            headerRight = pageWidth - marginX - photoSize - 6;
+          } catch (err) { /* bozuk görsel ise sessizce atla */ }
+        }
+
+        /* --- İsim --- */
+        const name = state.fullName || t("txtDefaultName");
+        doc.setFont(fontFamily, "bold");
+        doc.setFontSize(21);
+        doc.setTextColor(INK[0], INK[1], INK[2]);
+        doc.splitTextToSize(name, headerRight - marginX).forEach((line, i) => {
+          if (i > 0) y += 6.5;
+          doc.text(line, marginX, y + 0.5);
+        });
+        y += 6.5;
+
+        /* --- Pozisyon ---
+           NOT: fotoğraf varsa metin genişliğini fotoğrafın kapladığı sütuna göre
+           daraltıyoruz (headerRight); aksi halde uzun bir pozisyon adı sağ üstteki
+           fotoğrafın üzerine yazılabiliyordu (metin fotoğraftan SONRA çizildiği
+           için PDF'te görsel olarak fotoğrafın üstünde kalıyordu). */
+        if (state.jobTitle) {
+          doc.setFont(fontFamily, "bold");
+          doc.setFontSize(11.5);
+          doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+          const jobLines = doc.splitTextToSize(state.jobTitle, headerRight - marginX);
+          jobLines.forEach(line => {
+            doc.text(line, marginX, y);
+            y += 9.5;
+          });
+        }
+
+        /* --- İletişim satırı --- */
+        const contactParts = [state.email, state.phone, state.location, state.linkedin, state.website].filter(Boolean);
+        if (contactParts.length) {
+          doc.setFont(fontFamily, "normal");
+          doc.setFontSize(9.5);
+          doc.setTextColor(GRAY_TXT[0], GRAY_TXT[1], GRAY_TXT[2]);
+          /* İlk satır fotoğrafın hizasında olabileceğinden dar genişlikte sarılır;
+             fotoğraf dikey alanının altına inildiğinde (aşağıdaki y kontrolünden
+             sonra) normal tam genişlik zaten kullanılabilir hale gelir. */
+          const contactWrapWidth = state.photo ? (headerRight - marginX) : contentWidth;
+          doc.splitTextToSize(contactParts.join("   |   "), contactWrapWidth).forEach(line => {
+            ensure(4.8);
+            doc.text(line, marginX, y);
+            y += 4.8;
+          });
+        }
+
+        if (state.photo) { y = Math.max(y, marginTop + 24 + 4); }
+        y += 3;
+
+        function sectionHeader(label) {
+          ensure(13);
+          y += 3;
+          doc.setFont(fontFamily, "bold");
+          doc.setFontSize(10.5);
+          doc.setTextColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+          doc.text(String(label).toUpperCase(), marginX, y);
+          y += 1.6;
+          doc.setDrawColor(ACCENT[0], ACCENT[1], ACCENT[2]);
+          doc.setLineWidth(0.45);
+          doc.line(marginX, y, pageWidth - marginX, y);
+          y += 5.5;
+        }
+
+        function bulletList(items) {
+          items.forEach(raw => {
+            const bText = raw.trim();
+            if (!bText) return;
+            doc.setFont(fontFamily, "normal");
+            doc.setFontSize(10.2);
+            const lines = doc.splitTextToSize(bText, contentWidth - 5);
+            lines.forEach((line, i) => {
+              ensure(4.9);
+              doc.setTextColor(INK[0], INK[1], INK[2]);
+              doc.text(i === 0 ? "•" : "", marginX, y);
+              doc.text(line, marginX + 4.5, y);
+              y += 4.9;
+            });
+          });
+        }
+
+        /* --- Özet --- */
+        if (state.summary.trim()) {
+          sectionHeader(t("txtSummary"));
+          para(state.summary.trim(), 10.3, "normal", INK, contentWidth, 5);
+          y += 3;
+        }
+
+        /* --- Deneyim --- */
+        const exps = state.experience.filter(e => e.title || e.company);
+        if (exps.length) {
+          sectionHeader(t("txtExperience"));
+          exps.forEach((e, idx) => {
+            ensure(11);
+            const dateStr = [e.start, e.current ? t("txtPresent") : e.end].filter(Boolean).join(" - ");
+            const titleLine = [e.title, e.company].filter(Boolean).join("  —  ");
+            doc.setFont(fontFamily, "bold");
+            doc.setFontSize(10.8);
+            doc.setTextColor(INK[0], INK[1], INK[2]);
+            const titleLines = doc.splitTextToSize(titleLine, contentWidth - (dateStr ? 42 : 0));
+            doc.text(titleLines[0] || "", marginX, y);
+            if (dateStr) {
+              doc.setFont(fontFamily, "normal");
+              doc.setFontSize(9.3);
+              doc.setTextColor(GRAY_DATE[0], GRAY_DATE[1], GRAY_DATE[2]);
+              doc.text(dateStr, pageWidth - marginX, y, { align: "right" });
+            }
+            y += 5.1;
+            for (let i = 1; i < titleLines.length; i++) {
+              ensure(5.1);
+              doc.setFont(fontFamily, "bold"); doc.setFontSize(10.8); doc.setTextColor(INK[0], INK[1], INK[2]);
+              doc.text(titleLines[i], marginX, y);
+              y += 5.1;
+            }
+            if (e.location) {
+              ensure(5);
+              doc.setFont(fontFamily, "normal");
+              doc.setFontSize(9.6);
+              doc.setTextColor(GRAY_TXT[0], GRAY_TXT[1], GRAY_TXT[2]);
+              doc.text(e.location, marginX, y);
+              y += 5;
+            }
+            const bullets = e.bullets.split(/\r?\n/).map(b => b.trim()).filter(Boolean);
+            bulletList(bullets);
+            y += idx === exps.length - 1 ? 0 : 3.5;
+          });
+          y += 3;
+        }
+
+        /* --- Eğitim --- */
+        const edus = state.education.filter(e => e.degree || e.school);
+        if (edus.length) {
+          sectionHeader(t("txtEducation"));
+          edus.forEach((e, idx) => {
+            ensure(9);
+            const dateStr = [e.start, e.end].filter(Boolean).join(" - ");
+            const line = [e.degree, e.school].filter(Boolean).join("  —  ");
+            doc.setFont(fontFamily, "bold");
+            doc.setFontSize(10.8);
+            doc.setTextColor(INK[0], INK[1], INK[2]);
+            const lLines = doc.splitTextToSize(line, contentWidth - (dateStr ? 42 : 0));
+            doc.text(lLines[0] || "", marginX, y);
+            if (dateStr) {
+              doc.setFont(fontFamily, "normal");
+              doc.setFontSize(9.3);
+              doc.setTextColor(GRAY_DATE[0], GRAY_DATE[1], GRAY_DATE[2]);
+              doc.text(dateStr, pageWidth - marginX, y, { align: "right" });
+            }
+            y += 5.1;
+            for (let i = 1; i < lLines.length; i++) {
+              ensure(5.1);
+              doc.setFont(fontFamily, "bold"); doc.setFontSize(10.8); doc.setTextColor(INK[0], INK[1], INK[2]);
+              doc.text(lLines[i], marginX, y);
+              y += 5.1;
+            }
+            if (e.location) {
+              ensure(5);
+              doc.setFont(fontFamily, "normal");
+              doc.setFontSize(9.6);
+              doc.setTextColor(GRAY_TXT[0], GRAY_TXT[1], GRAY_TXT[2]);
+              doc.text(e.location, marginX, y);
+              y += 5;
+            }
+            y += idx === edus.length - 1 ? 0 : 3;
+          });
+          y += 3;
+        }
+
+        /* --- Teknik / Soft Skills --- */
+        if (state.technicalSkills.trim()) {
+          sectionHeader(t("txtTechSkills"));
+          para(state.technicalSkills.split(",").map(s => s.trim()).filter(Boolean).join("  •  "), 10.2, "normal", INK, contentWidth, 5);
+          y += 3;
+        }
+        if (state.softSkills.trim()) {
+          sectionHeader(t("txtSoftSkills"));
+          para(state.softSkills.split(",").map(s => s.trim()).filter(Boolean).join("  •  "), 10.2, "normal", INK, contentWidth, 5);
+          y += 3;
+        }
+
+        /* --- Diller --- */
+        const langs = state.languages.filter(l => l.name);
+        if (langs.length) {
+          sectionHeader(t("txtLanguages"));
+          para(langs.map(l => l.name + (l.level ? ` (${l.level})` : "")).join("  •  "), 10.2, "normal", INK, contentWidth, 5);
+          y += 3;
+        }
+
+        /* --- Sertifikalar --- */
+        const certs = state.certifications.filter(c => c.name);
+        if (certs.length) {
+          sectionHeader(t("txtCerts"));
+          certs.forEach(c => {
+            para([c.name, c.issuer, c.year].filter(Boolean).join("  —  "), 10.2, "normal", INK, contentWidth, 5);
+          });
+        }
+
+        return doc;
+      }
+
+      $("#downloadPdf").addEventListener("click", async () => {
+        const cvEl = $("#cvPage");
+        if (cvEl.querySelector(".cv-empty")) {
+          alert(currentLang === "tr" ? "Lütfen önce formu doldurun." : "Please fill out the form first.");
+          return;
+        }
+        const btn = $("#downloadPdf");
+        const originalHTML = btn.innerHTML;
+        btn.disabled = true;
+        btn.style.opacity = ".65";
+        btn.innerHTML = `<span>${currentLang === "tr" ? "Hazırlanıyor..." : "Preparing..."}</span>`;
+        try {
+          if (!(window.jspdf && window.jspdf.jsPDF)) {
+            throw new Error("jsPDF not available");
+          }
+          const doc = await buildResumePdf();
+          const filename = (state.fullName ? state.fullName.replace(/\s+/g, "_") : "cv") + "_ATS.pdf";
+          doc.save(filename);
+        } catch (err) {
+          console.error("PDF export error:", err);
+          alert(currentLang === "tr"
+            ? "PDF oluşturulamadı. İnternet bağlantınızı kontrol edip tekrar deneyin (PDF kütüphanesi ve Türkçe karakter fontu CDN üzerinden yükleniyor)."
+            : "Couldn't generate the PDF. Please check your internet connection and try again (the PDF library and font load from a CDN).");
+        } finally {
+          btn.disabled = false;
+          btn.style.opacity = "";
+          btn.innerHTML = originalHTML;
+        }
+      });
+
+      $("#downloadTxt").addEventListener("click", () => {
+        const nl = String.fromCharCode(10);
+        const lines = [];
+        lines.push((state.fullName || t("txtDefaultName")).toUpperCase());
+        if (state.jobTitle) lines.push(state.jobTitle);
+        const contact = [state.email, state.phone, state.location, state.linkedin, state.website].filter(Boolean).join(" | ");
+        if (contact) lines.push(contact);
+        lines.push("");
+
+        if (state.summary.trim()) { lines.push(t("txtSummary")); lines.push(state.summary.trim()); lines.push(""); }
+
+        const exps = state.experience.filter(e => e.title || e.company);
+        if (exps.length) {
+          lines.push(t("txtExperience"));
+          exps.forEach(e => {
+            const dateStr = [e.start, e.current ? t("txtPresent") : e.end].filter(Boolean).join(" - ");
+            lines.push(`${e.title} - ${e.company}${e.location ? ", " + e.location : ""} (${dateStr})`);
+            e.bullets.split(/\r?\n/).map(b => b.trim()).filter(Boolean).forEach(b => lines.push("- " + b));
+            lines.push("");
+          });
+        }
+
+        const edus = state.education.filter(e => e.degree || e.school);
+        if (edus.length) {
+          lines.push(t("txtEducation"));
+          edus.forEach(e => {
+            const dateStr = [e.start, e.end].filter(Boolean).join(" - ");
+            lines.push(`${e.degree} - ${e.school}${e.location ? ", " + e.location : ""} (${dateStr})`);
+          });
+          lines.push("");
+        }
+
+        if (state.technicalSkills.trim()) { lines.push(t("txtTechSkills")); lines.push(state.technicalSkills.split(",").map(s => s.trim()).filter(Boolean).join(", ")); lines.push(""); }
+        if (state.softSkills.trim()) { lines.push(t("txtSoftSkills")); lines.push(state.softSkills.split(",").map(s => s.trim()).filter(Boolean).join(", ")); lines.push(""); }
+
+        const langs = state.languages.filter(l => l.name);
+        if (langs.length) { lines.push(t("txtLanguages")); lines.push(langs.map(l => l.name + (l.level ? ` (${l.level})` : "")).join(", ")); lines.push(""); }
+
+        const certs = state.certifications.filter(c => c.name);
+        if (certs.length) {
+          lines.push(t("txtCerts"));
+          certs.forEach(c => lines.push([c.name, c.issuer, c.year].filter(Boolean).join(" - ")));
+        }
+
+        const blob = new Blob([lines.join(nl)], { type: "text/plain;charset=utf-8" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = (state.fullName ? state.fullName.replace(/\s+/g, "_") : "cv") + "_ATS.txt";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+      });
+
+      applyStaticI18n();
+      renderAllLists();
+      updatePhotoPreview();
+      renderAll();
+    })();
+  </script>
+</body>
+
+</html>
